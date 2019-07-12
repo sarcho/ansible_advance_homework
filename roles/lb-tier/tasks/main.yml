@@ -7,7 +7,7 @@
     state: present
   register: result_install
   notify:
-    - Restart "{{ progam }}"
+    - Restart HAproxy
 
 - name: Ensure {{ program }} is configured to load balance the app servers
   template:
@@ -16,7 +16,7 @@
     mode: 0644
   register: result_config
   notify:
-    - Restart "{{ program }}"
+    - Restart HAproxy
 
 - name: Ensure {{ program }} is enabled and started
   service:

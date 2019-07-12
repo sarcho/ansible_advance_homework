@@ -1,6 +1,6 @@
 ---
 # handlers file for lb-tier
-- name: Restart {{ program }}
+- name: Restart HAproxy 
   service:
     name: "{{ program }}"
     enabled: true
