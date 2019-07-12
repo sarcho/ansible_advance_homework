@@ -1,2 +1,7 @@
 ---
 # handlers file for app-tier
+- name: Restart "{{ app }}"
+  service:
+      name: "{{ app }}"
+      enabled: true
+      state: restarted

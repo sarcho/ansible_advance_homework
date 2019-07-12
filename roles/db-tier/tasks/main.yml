@@ -1,2 +1,24 @@
 ---
 # tasks file for db-tier
+
+- name: Ensure that PostgreSQL is installed
+  yum:
+    name: "{{ package }}"
+    state: present
+    enablerepo: "{{ postgresql_enablerepo }}"
+  register: result_install
+  notify:
+    - Restart {{ package }}
+
+- name: Ensure that the PostgreSQL is initilized
+  command: postgresql-setup initdb
+  args:
+    creates: /var/lib/pgsql/data/postgresql.conf
+
+- name: Ensure PostgreSQL is started and enabled
+  service:
+    name:
+    enabled: true
+    state: started
+  when:
+    - result_install is succeeded

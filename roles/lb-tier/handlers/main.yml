@@ -1,2 +1,7 @@
 ---
 # handlers file for lb-tier
+- name: Restart {{ program }}
+  service:
+    name: "{{ program }}"
+    enabled: true
+    state: restarted

@@ -1,2 +1,22 @@
 ---
 # tasks file for base-config
+
+- name: Ensure sudo is configured
+  replace:
+    path: /etc/sudoers
+    regexp: '^Defaults\s*requiretty'
+    replace: 'Defaults !requiretty'
+    backup: yes
+    validate: 'visudo -cf %s'
+
+- name: Ensure three tier app repo is configured
+  template:
+    src: open_three_tier_app.repo.j2
+    dest: /etc/yum.repos.d/open_three_tier_app.repo
+    mode: 0644
+
+- name: Ensure base tools and packages are installed
+  yum:
+    name: "{{ packages_var }}"
+    state: present
+

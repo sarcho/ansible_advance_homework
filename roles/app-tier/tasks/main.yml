@@ -1,2 +1,28 @@
 ---
 # tasks file for app-tier
+
+- name: Ensure {{ app }} is installed
+  yum:
+    name: "{{ app }}"
+    state: present
+  notify:
+    - Restart "{{ app }}"
+
+- name: Ensure that the default web directory exists
+  file:
+    path: /usr/share/tomcat/webapps/ROOT
+    state: directory
+
+- name: Ensure the template for index.html is applied.
+  template:
+    src: template/index.html.j2
+    dest: /usr/share/tomcat/webapps/ROOT/index.html
+    mode: 0644
+  notify:
+    - Restart "{{ app }}"
+
+- name: Ensure {{ app }} is enabled and running
+  service:
+    name: "{{ app }}"
+    enabled: true
+    state: started

@@ -1,2 +1,5 @@
 ---
 # vars file for base-config
+packages_var:
+  - httpie
+  - python-pip

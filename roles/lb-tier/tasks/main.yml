@@ -1,2 +1,28 @@
 ---
 # tasks file for lb-tier
+
+- name: Ensure {{ program }} is installed
+  yum:
+    name: "{{ program }}"
+    state: present
+  register: result_install
+  notify:
+    - Restart "{{ progam }}"
+
+- name: Ensure {{ program }} is configured to load balance the app servers
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    mode: 0644
+  register: result_config
+  notify:
+    - Restart "{{ program }}"
+
+- name: Ensure {{ program }} is enabled and started
+  service:
+    name: "{{ program }}"
+    enabled: true
+    state: started
+  when:
+    - result_install is succeeded
+    - result_config is succeeded

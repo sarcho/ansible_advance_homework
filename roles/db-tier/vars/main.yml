@@ -1,2 +1,3 @@
 ---
 # vars file for db-tier
+package: postgresql-server
